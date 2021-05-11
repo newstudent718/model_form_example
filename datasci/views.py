@@ -2,9 +2,9 @@ from django.shortcuts import render
 
 from django.contrib.auth.models import User
 
-from .forms import UserForm, ContactForm
+from .forms import UserForm, ContactForm, AboutForm
 
-from .models import Contact
+from .models import Contact, About
 
 def index(request):
     users = User.objects.all()
@@ -26,3 +26,14 @@ def contact(request):
         form = ContactForm
 
     return render(request, 'contact.html', context={'contacts': c, 'form': form})
+
+def about(request):
+    a = About.objects.first()
+    if request.method == 'POST':
+        form = AboutForm(request.POST)
+        if form.is_valid():
+            form.save()
+    else:
+        form = AboutForm
+    return render(request, 'about.html', context={'a': a, 'form': form})
+
